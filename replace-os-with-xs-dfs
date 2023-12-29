@@ -1,0 +1,61 @@
+Problem Link : https://bit.ly/3QyPr5g
+
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+      Scanner sc=new Scanner(System.in);
+      int m=sc.nextInt();
+      int n=sc.nextInt();
+      sc.nextLine();
+      char mat[][]=new char[m][n];
+      for(int i=0;i<m;i++)
+        for(int j=0;j<n;j++)
+          mat[i][j]=sc.next().charAt(0);
+          
+      Solution.fill(m,n,mat);
+  }
+}
+
+  class Solution{
+    static void fill(int m, int n, char a[][]){
+      
+      boolean[][] visited=new boolean[m][n];
+      
+      for(int i=0;i<m;i++){
+        for(int j=0;j<n;j++){
+          if(a[i][j]=='O' && (i==0 || i==m-1 || j==0 || j==n-1) && !visited[i][j]){
+            dfs(a,i,j,visited,m,n);
+          }
+        }
+      }
+      
+      for(int i=0;i<m;i++){
+        for(int j=0;j<n;j++){
+          if(a[i][j]=='O' && !visited[i][j]) a[i][j]='X';
+        }
+      }
+      
+      for(int i=0;i<m;i++){
+        for(int j=0;j<n;j++){
+         System.out.print(a[i][j]+" ");
+        }
+        System.out.println();
+      }
+    }
+    
+    static void dfs(char[][] a,int r,int c,boolean[][] visited,int m,int n){
+      int arr1[]={0,1,0,-1};
+      int arr2[]={-1,0,1,0};
+      
+      visited[r][c]=true;
+      
+      for(int i=0;i<4;i++){
+        int nr=r+arr1[i];
+        int nc=c+arr2[i];
+        if(nr>=0 &&  nr<m && nc>=0 && nc<n && a[nr][nc]=='O' && !visited[nr][nc]){
+          dfs(a,nr,nc,visited,m,n);
+        }
+      }
+    }
+  }
