@@ -1,0 +1,55 @@
+//Problem Link :https://bit.ly/3preQSc
+
+class Pair{
+    int row,col;
+    Pair(int row,int col){
+        this.row=row;
+        this.col=col;
+    }
+}
+class Solution {
+
+    int numberOfEnclaves(int[][] grid) {
+        
+        int m=grid.length,n=grid[0].length;
+        boolean visited[][]=new boolean[m][n];
+        Queue<Pair> q=new LinkedList<>();
+        
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if((i==0 || j==0 || i==m-1 || j==n-1) && grid[i][j]==1){
+                    q.offer(new Pair(i,j));
+                }
+            }
+        }
+        
+        while(!q.isEmpty()){
+            
+            int r=q.peek().row;
+            int c=q.peek().col;
+            q.poll();
+            
+            int arr1[]={0,0,1,-1};
+            int arr2[]={-1,1,0,0};
+            
+            if(!visited[r][c]){
+                visited[r][c]=true;
+                for(int i=0;i<4;i++){
+                    int nr=r+arr1[i];
+                    int nc=c+arr2[i];
+                    if(nr>=0 && nr<m && nc<n && nc>=0 && grid[nr][nc]==1 && !visited[nr][nc]){
+                        q.offer(new Pair(nr,nc));
+                    }
+                }
+            }
+        }
+        
+        int enclavesCount=0;
+        
+        for(int i=0;i<m;i++)
+            for(int j=0;j<n;j++)
+                if(grid[i][j]==1 && !visited[i][j]) enclavesCount++;
+                
+        return enclavesCount;
+    }
+}
