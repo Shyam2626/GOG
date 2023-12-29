@@ -1,0 +1,80 @@
+//{ Driver Code Starts
+// Initial Template for Java
+
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+// Position this line where user code will be pasted.
+
+class GFG {
+    public static void main(String[] args) throws IOException {
+        Scanner sc = new Scanner(System.in);
+        int T = sc.nextInt();
+        while (T-- > 0) {
+            int n = sc.nextInt();
+            int m = sc.nextInt();
+            int[][] grid = new int[n][m];
+
+            for (int i = 0; i < n; i++) {
+
+                for (int j = 0; j < m; j++) {
+                    grid[i][j] = sc.nextInt();
+                }
+            }
+
+            Solution ob = new Solution();
+            int ans = ob.countDistinctIslands(grid);
+            System.out.println(ans);
+        }
+    }
+}
+// } Driver Code Ends
+
+
+class Solution {
+
+    int countDistinctIslands(int[][] grid) {
+        int m=grid.length;
+        int n=grid[0].length;
+        
+        boolean visited[][] = new boolean[m][n];
+        List<List<String>> ans=new ArrayList<>();
+        
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(grid[i][j]==1 && !visited[i][j]){
+                    
+                    List<String> currList=new ArrayList<>();
+                    dfs(i,j,currList,grid,visited,i,j,m,n);
+                    
+                    if(!ans.contains(currList))
+                        ans.add(currList);      
+                
+                }
+            }
+        }
+        return ans.size();
+    }
+    
+    void dfs(int r,int c,List<String> currList,int[][] grid,boolean[][] visited,int baseR,int baseC,int m,int n){
+    
+        visited[r][c]=true;
+        currList.add(toString(r-baseR,c-baseC));
+        
+        int arr1[]={0,0,1,-1};
+        int arr2[]={1,-1,0,0};
+        
+        for(int i=0;i<4;i++){
+            int nr=r+arr1[i];
+            int nc=c+arr2[i];
+            if(nr>=0 && nr<m && nc>=0 && nc<n && grid[nr][nc]==1 && !visited[nr][nc]){
+                dfs(nr,nc,currList,grid,visited,baseR,baseC,m,n);
+            }
+        }
+    }
+    
+    String toString(int n1,int n2){
+        return n1+" "+n2;
+    }
+}
