@@ -1,0 +1,38 @@
+//Problem Link : https://bit.ly/3PvBfsm
+
+class Solution
+{
+    static int[] topoSort(int n, ArrayList<ArrayList<Integer>> adj) 
+    {
+        boolean visited[] = new boolean[n];
+        Stack<Integer> stk = new Stack<>();
+        
+        for(int i=0;i<n;i++){
+            if(!visited[i]){
+                dfs(visited,stk,i,adj);
+            }
+        }
+        
+        int ans[]=new int[n];
+        int idx=0;
+        
+        while(!stk.isEmpty()){
+            ans[idx++]=stk.pop();
+        }
+        
+        return ans;
+    }
+    
+    static void dfs(boolean[] visited,Stack<Integer> stk,int node,ArrayList<ArrayList<Integer>> adj){
+        
+        ArrayList<Integer> currList = adj.get(node);
+        visited[node] = true;
+        
+        for(int currNode : currList){
+            if(!visited[currNode]){
+                dfs(visited,stk,currNode,adj);
+            }
+        }
+        stk.push(node);
+    }
+}
