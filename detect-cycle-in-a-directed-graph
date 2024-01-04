@@ -1,0 +1,44 @@
+//Problem Link : https://bit.ly/3QwPVsi
+
+class Solution {
+    
+    public boolean isCyclic(int n, ArrayList<ArrayList<Integer>> adj) {
+        
+        boolean visited[]=new boolean[n];
+        boolean path[]=new boolean[n];
+        
+        for(int i=0;i<n;i++){
+            if(!visited[i]){
+                if(dfs(visited,path,i,adj))
+                    return true;
+            }
+        }
+        
+        return true;
+        
+    }
+    
+    public boolean dfs(boolean[] visited,boolean[] path,int node,ArrayList<ArrayList<Integer>> adj){
+        
+        visited[node] = true;
+        path[node] = true;
+        
+        ArrayList<Integer> currList = adj.get(node);
+        
+        for(int currNode : currList){
+            
+            if(!visited[currNode]){
+                if(dfs(visited,path,currNode,adj))
+                    return true;
+            }
+            
+            else if(path[currNode]){
+                return true;
+            }
+        }
+        
+        path[node] = false;
+        return false;
+        
+    }
+}
