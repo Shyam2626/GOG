@@ -1,0 +1,37 @@
+//Problem Link : https://bit.ly/3PvBfsm
+
+class Solution
+{
+    static int[] topoSort(int n, ArrayList<ArrayList<Integer>> adj) 
+    {
+        
+        int inDegree[]=new int[n];
+        for(int i=0;i<n;i++){
+            for(int currNode : adj.get(i)){
+                inDegree[currNode]++;
+            }
+        }
+        
+        Queue<Integer> q=new LinkedList<>();
+        for(int i=0;i<n;i++)
+            if(inDegree[i]==0)
+                q.offer(i);
+                
+        int ans[]=new int[n];
+        int idx=0;
+                
+        while(!q.isEmpty()){
+            int node=q.peek();
+            q.poll();
+            ans[idx++]=node;
+            
+            
+            for(int currNode : adj.get(node)){
+                inDegree[currNode]--;
+                if(inDegree[currNode]==0)
+                    q.offer(currNode);
+            }
+        }
+        return ans;
+    }
+}
