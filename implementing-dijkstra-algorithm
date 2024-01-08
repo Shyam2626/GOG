@@ -1,0 +1,56 @@
+//Problem Link :  https://bit.ly/3KeZZ7j
+
+import java.util.*;
+import java.util.PriorityQueue;
+class Pair {
+    int distance, adjNode;
+    Pair(int distance, int adjNode) {
+        this.distance = distance;
+        this.adjNode = adjNode;
+    }
+}
+
+public class Solution {
+    public static List<Integer> dijkstra(int[][] edge, int n, int edges, int source) {
+
+        List<List<List<Integer>>> adj = new ArrayList<>();
+
+        for (int i = 0; i < n; i++)
+            adj.add(new ArrayList<>());
+
+        for (int i = 0; i < edge.length; i++) {
+            adj.get(edge[i][0]).add(Arrays.asList(edge[i][1], edge[i][2]));
+            adj.get(edge[i][1]).add(Arrays.asList(edge[i][0], edge[i][2]));
+        }
+
+        int dist[] = new int[n];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[source] = 0;
+
+        PriorityQueue<Pair> q = new PriorityQueue<>(Comparator.comparingInt(x -> x.distance));
+        q.offer(new Pair(0, source));
+
+        while (!q.isEmpty()) {
+
+            int currDist = q.peek().distance;
+            int node = q.peek().adjNode;
+            q.poll();
+
+            for (int i = 0; i < adj.get(node).size(); i++) {
+                int adjnode = adj.get(node).get(i).get(0);
+                int weight = adj.get(node).get(i).get(1);
+
+                if (dist[adjnode] > weight + currDist) {
+                    dist[adjnode] = weight + currDist;
+                    q.offer(new Pair(dist[adjnode], adjnode));
+                }
+            }
+        }
+
+        List<Integer> ans = new ArrayList<>();
+        for (int num : dist)
+            ans.add(num);
+
+        return ans;
+    }
+}
