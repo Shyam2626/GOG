@@ -1,0 +1,60 @@
+//Problem Link :https://bit.ly/3QLxjET
+class Pair{
+    int distance,first,second;
+    Pair(int distance,int first,int second){
+        this.first = first;
+        this.second = second;
+        this.distance = distance;
+    }
+}
+
+class Solution {
+
+    int shortestPath(int[][] grid, int[] src, int[] dest) {
+        
+        if(src[0] == dest[0] && src[1] == dest[1])
+            return 0;
+
+        Queue<Pair> q = new LinkedList<>();
+        q.offer(new Pair(0,src[0],src[1]));
+        
+        int m = grid.length, n = grid[0].length;
+        
+        int distArray[][] = new int[m][n];
+        
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++)
+                distArray[i][j] = Integer.MAX_VALUE;
+        }
+        
+        distArray[src[0]][src[1]] = 0;
+        
+        int arr1[]={0,0,-1,1};
+        int arr2[]={1,-1,0,0};
+        
+        while(!q.isEmpty()){
+            
+            Pair currpair = q.poll();
+            
+            int wt = currpair.distance;
+            int fst = currpair.first;
+            int sec = currpair.second;
+            
+            if(fst == dest[0] && sec == dest[1])
+                return wt;
+                
+            for(int i=0;i<4;i++){
+                int r = fst + arr1[i];
+                int c = sec + arr2[i];
+                if(r>=0 && c>=0 && r<m && c<n && grid[r][c]==1 && distArray[r][c]>wt+1){
+                    distArray[r][c] = wt+1;
+                    if(r == dest[0] && c == dest[1]){
+                        return wt+1;
+                    }
+                    q.offer(new Pair(wt+1,r,c));
+                }
+            }
+        }
+        return -1;
+    }
+}
